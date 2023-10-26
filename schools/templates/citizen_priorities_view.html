@@ -1,0 +1,74 @@
+{% extends "_base.html" %}
+
+
+{% block content %}
+
+<h1>Citizen Priorities View</h1>
+    
+<form method="get" action="{% url 'citizen_priorities_view' %}">
+    <label for="district">Select District:</label>
+    <select id="district" name="district">
+        <option value="">All Districts</option>
+        {% for district in districts %}
+            <option value="{{ district.id }}" {% if district.id == selected_district %}selected{% endif %}>
+                {{ district.name }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Apply Filter</button>
+</form>
+
+<div style="width: 40%; width: 40%; margin: auto;">
+    <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const labels = {{ month|safe }};
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Average Indicator Values',
+            data: {{ avg_indicator_values|safe }},
+            borderWidth: 1,
+            fill: false,
+            borderColor: 'blue',
+            pointBackgroundColor: 'blue',
+        }]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Average Indicator Values'
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    const ctx = new Chart(document.getElementById('myChart'), config);
+</script>
+
+      
+
+
+{% endblock content %}
+
+
+
+

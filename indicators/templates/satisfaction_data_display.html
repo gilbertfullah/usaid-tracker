@@ -1,0 +1,75 @@
+{% extends "_base.html" %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+{% load custom_filters %}
+
+{% block content %}
+
+<form method="get" action="#">
+    <label for="district">Select District:</label>
+    <select name="district" id="district">
+        <option value="">All</option>
+        {% for district in all_districts_avg %}
+            <option value="{{ district.district }}" {% if district.district == selected_district %}selected{% endif %}>
+                {{ district.district }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label for="service_type">Select Service Type:</label>
+    <select name="service_type" id="service_type">
+        <option value="">All</option>
+        {% for service_type in all_service_types_avg %}
+            <option value="{{ service_type.service_type }}" {% if service_type.service_type == selected_service_type %}selected{% endif %}>
+                {{ service_type.service_type }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Apply Filters</button>
+</form>
+
+
+
+<a href="#" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+  <div class="flex">
+    <div class="flex-1">
+      <div class="mb-2">
+        <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Satisfaction with Local Council Services</h5>
+      </div>
+      <div class="flex items-center">
+        <span class="text-{{ health_color }}-500 text-2xl pr-2">
+          <i class="fa fa-arrow-{{ health_arrow }}"></i>
+        </span>
+        <span class="text-gray-700 text-lg pr-4">{{health_avg}}%</span>
+        <span class="text-{{ education_color }}-500 text-2xl pr-2">
+          <i class="fa fa-arrow-{{ education_arrow }}"></i>
+        </span>
+        <span class="text-gray-700 text-lg pr-4">{{education_avg}}%</span>
+        <span class="text-{{ agriculture_color }}-500 text-2xl pr-2">
+          <i class="fa fa-arrow-{{ agriculture_arrow }}"></i>
+        </span>
+        <span class="text-gray-700 text-lg">{{agriculture_avg}}%</span>
+      </div>
+    </div>
+    
+    <div class="w-1/4">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 512a192 192 0 1 0 0-384a192 192 0 0 0 0 384zm0 64a256 256 0 1 1 0-512a256 256 0 0 1 0 512z"/><path fill="currentColor" d="M512 512a32 32 0 0 1 32 32v256a32 32 0 1 1-64 0V544a32 32 0 0 1 32-32z"/><path fill="currentColor" d="M384 649.088v64.96C269.76 732.352 192 771.904 192 800c0 37.696 139.904 96 320 96s320-58.304 320-96c0-28.16-77.76-67.648-192-85.952v-64.96C789.12 671.04 896 730.368 896 800c0 88.32-171.904 160-384 160s-384-71.68-384-160c0-69.696 106.88-128.96 256-150.912z"/></svg>
+    </div>
+  </div>
+</a>
+
+
+
+
+
+
+{% endblock content %}
+
+
+
+
+
+

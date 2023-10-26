@@ -1,0 +1,72 @@
+{% load static %}
+
+
+<nav class="bg-white border-gray-200 dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <a href="https://flowbite.com/" class="flex items-center">
+        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="Flowbite Logo" />
+        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+      </a>
+      <div class="flex md:order-2">
+        {% if user.is_authenticated %}
+            <a href="{% if user.is_local_council %}{% url 'local_council_profile' id=local_council_id %}
+               {% elif user.is_district_cso %}{% url 'district_cso_profile' %}
+               {% elif user.is_mda %}{% url 'mda_profile' %}
+               {% elif user.is_mlgrd %}{% url 'mlgrd_profile' %}
+               {% endif %}" class="flex items-center text-black text-sm font-medium hover:text-gray-100 dark:text-gray-400">
+               <img src="{% if user.profile_pic %}{{ user.profile_pic.url }}{% else %}{% static 'src/images/avatar.jpg' %}{% endif %}" alt="User Avatar" class="w-6 h-6 rounded-full mr-2">
+                {{ user.username }}
+            </a>
+        {% else %}
+            <a type="button" href="{% url 'register' %}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Register/Login</a>
+        {% endif %}
+        
+        <button data-collapse-toggle="navbar-cta" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-cta" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+            </svg>
+        </button>
+      </div>
+
+      
+    
+    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
+      <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+        <li>
+            <a href="{% url "index" %}" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Dashboard</a>
+        </li>
+        {% if user.is_authenticated and not user.is_superuser %}
+        <li>
+          <a href="{% url 'assigned_indicators' %}" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Assigned Indicators</a>
+        </li>
+        {% endif %}
+        {% if user.is_superuser %}
+        <li>
+          <a href="{% url "indicator_list" %}" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Indicator List</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+
+    {% if user.is_superuser %}
+    <div class="relative m-6 inline-flex w-fit">
+      <div class="{% if has_pending %}absolute bottom-auto left-auto right-0 top-0 z-10 inline-block -translate-y-1/2 translate-x-2/4 rotate-0 skew-x-0 skew-y-0 scale-x-100 scale-y-100 rounded-full bg-pink-700 p-1 text-xs{% endif %}"></div>
+      <div class="flex items-center justify-center rounded-lg bg-indigo-400 px-1 py-1 text-center text-white shadow-lg dark:text-gray-200">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="h-10 w-10">
+          <path
+            fill-rule="evenodd"
+            d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z"
+            clip-rule="evenodd" />
+        </svg>
+      </div>
+    </div>
+    {% endif %}
+  
+    <!-- End of notification icon code -->
+    </div>
+  </nav>

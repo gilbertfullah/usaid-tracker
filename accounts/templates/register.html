@@ -1,0 +1,73 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="flex justify-center">
+    <div class="mb-4 border-b border-gray-200 dark:border-gray-700" style="margin-top: 30px;">
+        <div class="mb-10">
+            <p class="mb-0 mt-2 pt-1 font-semibold text-xl">
+                Already have an account?
+                <a href="{% url "login" %}" class="text-red-700 text-xl transition duration-150 ease-in-out focus:text-danger-600 active:text-danger-700">
+                Login
+                </a>
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-3xl">
+            <!-- Community Facilitator Card -->
+            <div class="p-6 rounded-lg cursor-pointer border {% if request.GET.selected_card == 'local_council' %} border-blue-500 {% else %} border-gray-300 {% endif %}" onclick="selectCard('local_council')">
+                <h2 class="text-xl font-semibold mb-2">LOCAL COUNCIL</h2>
+                <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+
+            <!-- DDOE Card -->
+            <div class="p-6 rounded-lg cursor-pointer border {% if request.GET.selected_card == 'mda' %} border-blue-500 {% else %} border-gray-300 {% endif %}" onclick="selectCard('mda')">
+                <h2 class="text-xl font-semibold mb-2">MDAs</h2>
+                <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+
+            <!-- Staff Card -->
+            <div class="p-6 rounded-lg cursor-pointer border {% if request.GET.selected_card == 'district_cso' %} border-blue-500 {% else %} border-gray-300 {% endif %}" onclick="selectCard('district_cso')">
+                <h2 class="text-xl font-semibold mb-2">DISTRICT CSOs</h2>
+                <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+
+            <!-- Staff Card -->
+            <div class="p-6 rounded-lg cursor-pointer border {% if request.GET.selected_card == 'mlgrd' %} border-blue-500 {% else %} border-gray-300 {% endif %}" onclick="selectCard('mlgrd')">
+                <h2 class="text-xl font-semibold mb-2">MLGRD</h2>
+                <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </div>
+        <!-- Example in register_login.html -->
+        <div class="flex justify-center mt-4">
+            {% if selected_card == 'local_council' %}
+            <a href="{% url "local_council_register" %}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next: Local Council Registration Form</a>
+            {% elif selected_card == 'mda' %}
+            <a href="{% url "mda_register" %}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next: MDAS Registration Form</a>
+            {% elif selected_card == 'district_cso' %}
+            <a href="{% url "district_cso_register" %}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover-bg-blue-700 dark:focus:ring-blue-800">Next: District CSOs Registration Form</a>
+            {% elif selected_card == 'mlgrd' %}
+            <a href="{% url "mlgrd_register" %}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next: MLGRD Registration Form</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <script>
+        function selectCard(cardType) {
+            window.location.href = window.location.pathname + "?selected_card=" + cardType;
+        }
+    </script>
+
+
+{% endblock content %}
+
+
+
+
+

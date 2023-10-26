@@ -1,0 +1,68 @@
+{% extends "_base.html" %}
+
+
+
+
+{% block content %}
+
+
+    <div class="col-span-12 lg:col-span-8 mx-8">
+        <h6 class="mb-3 font-semibold text-gray-900 text-lg">Assigned Indicators</h6>
+        <div class="p-4 border rounded bg-white dark:bg-gray-800">
+        <!-- Assigned Indicators -->
+        <div class="assigned-indicators">
+
+            
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Indicator Name
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Role
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Date Assigned
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {% for assignment in assigned_indicators %}
+                        <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ assignment.indicator.name }}
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ assignment.role.name }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ assignment.assigned_at }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="{% url "manage_indicator" assignment.id %}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Manage Indicator</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <p>No assign indicator yet.</p>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            
+            
+            
+        </div>
+
+        </div>
+    </div>
+
+
+
+{% endblock content %}

@@ -1,0 +1,83 @@
+{% extends "_base.html" %}
+{% load static %}
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h5 class="mt-5 text-center font-bold" style="margin-top: 100px; margin-bottom: 30px;">DISTRICT CSO REGISTRATION FORM</h5>
+<div class="flex items-center justify-center min-h-screen">
+    <form method="POST" enctype="multipart/form-data" class="w-11/12 md:w-1/2 p-4 rounded-md" style="margin-bottom: 80px; background-color: #f5f5f5; border: 1px solid #e3e3e3;" autocomplete="off" action="{% url 'district_cso_register' %}" novalidate>
+        {% csrf_token %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Field 1: Name -->
+            <div class="p-4">
+                {{ form.first_name|as_crispy_field }}
+            </div>
+
+            <!-- Field 2: Other Field -->
+            <div class="p-4">
+                {{ form.last_name|as_crispy_field }}
+            </div>
+
+            <!-- Field 3: Another Field -->
+            <div class="p-4">
+                {{ form.username|as_crispy_field }}
+            </div>
+
+            <!-- Field 7: Other Field -->
+            <div class="p-4">
+                {{ form.email|as_crispy_field }}
+            </div>
+
+            <!-- Field 4: Name -->
+            <div class="p-4">
+                {{ form.password1|as_crispy_field }}
+            </div>
+
+            <!-- Field 5: Other Field -->
+            <div class="p-4">
+                {{ form.password2|as_crispy_field }}
+            </div>
+
+            <!-- Field 6: Another Field -->
+            <div class="p-4">
+                {{ form.gender|as_crispy_field }}
+            </div>
+
+            <!-- Field 8: Another Field -->
+            <div class="p-4">
+                {{ form.phone_number|as_crispy_field }}
+            </div>
+
+            <!-- Field 9: Name -->
+            <div class="p-4">
+                {{ form.district|as_crispy_field }}
+            </div>
+
+            <!-- Field 8: Another Field -->
+            <div class="p-4">
+                {{ form.position|as_crispy_field }}
+            </div>
+
+            <!-- Field 10: Other Field -->
+            <div class="p-4">
+                {{ form.profile_pic|as_crispy_field }}
+            </div>
+            
+        </div>
+            <!-- Submit Button -->
+            <div class="col-span-2">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Register
+                </button>
+
+            </div>
+        
+    </form>
+</div>
+
+
+
+
+
+{% endblock content %}

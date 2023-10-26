@@ -1,0 +1,65 @@
+{% extends "_base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% block content %}
+
+<!-- Create a dropdown for selecting a district (optional) -->
+<form method="get">
+    <label for="district">Select a District:</label>
+    <select name="district" id="district">
+        <option value="">All Districts</option>
+        {% for district in districts %}
+            <option value="{{ district.id }}" {% if district == selected_district %}selected{% endif %}>{{ district.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Apply Filter</button>
+</form>
+
+<!-- Render the chart -->
+<canvas id="myChart"></canvas>
+
+<script>
+    // Prepare data for Chart.js
+    var serviceTypes = {{ service_types|safe }};
+    var dates = {{ dates|safe }};
+    var dataByServiceType = {{ data_by_service_type|safe }};
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: serviceTypes.map(function(serviceType, index) {
+                return {
+                    label: serviceType,
+                    data: dataByServiceType[serviceType],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false,
+                    tension: 0.2
+                };
+            })
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                        displayFormats: {
+                            day: 'MMM D'
+                        }
+                    }
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "_base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<div class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto bg-white p-4 rounded shadow-lg">
+        <h1 class="text-2xl font-semibold text-gray-800 mb-4">Manage {{ indicator.name }}</h1>
+
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Indicator Values</h2>
+
+        <div class="space-y-4">
+            <div class="border border-gray-300 p-4 rounded">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th class="text-left">Date Submitted</th>
+                                <th class="text-left">Indicator Value</th>
+                                <th class="text-left">Update Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in indicator_data %}
+                                <tr>
+                                    <td>{{ data.date_submitted }}</td>
+                                    <td>{{ data.indicator_value }}</td>
+                                    <td>
+                                        <form method="post" action="{% url 'update_indicator_value' data.id %}">
+                                            {% csrf_token %}
+                                            <input type="text" name="indicator_value" value="{{ data.indicator_value }}">
+                                            <button type="submit">Update Value</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock content %}
+
+
+
+
+

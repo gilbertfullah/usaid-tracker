@@ -1,0 +1,71 @@
+{% extends "_base.html" %}
+
+
+{% load static %}
+{% block content %}
+
+    <div class="col-span-12 lg:col-span-8 mx-8">
+        <h6 class="mb-3 font-semibold text-gray-900 text-lg">All Indicators</h6>
+        <div class="p-4 border rounded bg-white dark:bg-gray-800">
+        <!-- Assigned Indicators -->
+        <!-- Add this code for the notification icon -->
+    
+        
+        <div class="assigned-indicators">
+
+            
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Indicator Name
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    {% for indicator in indicators %}
+                    <tbody>
+                        <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{indicator.indicator.name}}
+                            </th>
+
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <div class="flex gap-4">
+                                    <a href="{% url 'manage_indicator' indicator.id %}" class="flex items-center text-blue-600 dark:text-blue-500 hover:underline">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="blue" fill-rule="evenodd" d="M4.19 7.262C5.94 5.577 8.517 4 12 4c3.483 0 6.06 1.577 7.81 3.262a15.086 15.086 0 0 1 3.001 4.11c.193.399.193.857 0 1.255a15.086 15.086 0 0 1-3 4.111C18.06 18.423 15.483 20 12 20c-3.483 0-6.06-1.577-7.81-3.262a15.088 15.088 0 0 1-3.001-4.11a1.435 1.435 0 0 1 0-1.255a15.088 15.088 0 0 1 3-4.111zM12 15a3 3 0 1 0 0-6a3 3 0 0 0 0 6z" clip-rule="evenodd"/></svg>
+                                    </a>
+                                    <a href="#" class="flex items-center text-red-600 dark:text-red-500 hover:underline">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="red" d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12Z"/></svg>
+                                    </a>
+                                </div>
+                            </th>
+                            
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+            
+            
+            
+            
+        </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock content %}
+
+
+
+
+

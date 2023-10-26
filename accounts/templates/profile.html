@@ -1,0 +1,50 @@
+{% extends "_base.html" %}
+
+
+{% block content %}
+
+    <div class="bg-gray-100">
+        <!-- Sidebar -->
+        <div class="md:w-1/4 bg-blue-900 text-white h-screen">
+            <div class="p-4">
+                <h1 class="text-2xl font-semibold">User Profile</h1>
+            </div>
+            <ul class="space-y-2 p-4">
+                <li><a href="#profile-info" class="block">Profile Info</a></li>
+                <li><a href="#notifications" class="block">Notifications</a></li>
+                <li><a href="#indicators" class="block">Assigned Indicators</a></li>
+                <li><a href="#settings" class="block">Settings</a></li>
+                <li><a href="{% url "logout" %}" class="block">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Content -->
+        <div class="md:w-3/4 p-4">
+            <div id="profile-info" class="tab-content hidden">
+                <!-- Content for Profile Info tab -->
+                
+            </div>
+            <div id="notifications" class="tab-content hidden">
+                <!-- Content for Notifications tab -->
+            </div>
+            <div id="indicators" class="tab-content hidden">
+                <!-- Content for Assigned Indicators tab -->
+            </div>
+            <div id="settings" class="tab-content hidden">
+                <!-- Content for Settings tab -->
+            </div>
+            <div id="logout" class="tab-content hidden">
+                <!-- Content for Logout tab -->
+            </div>
+        </div>
+
+    </div>
+
+
+
+{% endblock content %}
+
+
+
+
+

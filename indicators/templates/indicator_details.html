@@ -1,0 +1,66 @@
+{% extends "_base.html" %}
+
+
+{% block content %}
+
+    <div class="col-span-12 lg:col-span-8 mx-8">
+        <h6 class="mb-3 font-semibold text-gray-900 text-lg">Indicator Value State</h6>
+        <div class="p-4 border rounded bg-white dark:bg-gray-800">
+        <!-- Assigned Indicators -->
+        <div class="assigned-indicators">
+
+            
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Indicator Name
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Answer Choice
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Date Submitted
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {% for indicator in indicators %}
+                        <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ indicator.indicator.name }}
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ indicator.answer_choice }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ indicator.date_submitted }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ indicator.status }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            
+            
+            
+        </div>
+
+        </div>
+    </div>
+
+
+
+{% endblock content %}
+
+
+

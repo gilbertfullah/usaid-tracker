@@ -1,0 +1,16 @@
+Using selector: SelectSelector
+Watching for file changes with StatReloader
+HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+Configuring endpoint tcp:port=8000:interface=127.0.0.1
+Listening on TCP address 127.0.0.1:8000
+WebSocket HANDSHAKING /ws/notifications/ [127.0.0.1:59253]
+Upgraded connection ['127.0.0.1', 59253] to WebSocket
+WebSocket ['127.0.0.1', 59253] open and established
+WebSocket CONNECT /ws/notifications/ [127.0.0.1:59253]
+WebSocket ['127.0.0.1', 59253] accepted by application
+HTTP b'GET' request for ['127.0.0.1', 59308]
+HTTP 200 response started for ['127.0.0.1', 59308]
+HTTP close for ['127.0.0.1', 59308]
+HTTP response complete for ['127.0.0.1', 59308]
+[mHTTP GET /admin/accounts/assignment/add/ 200 [2.29, 127.0.0.1:59308][0m
+C:\Users\HP\Documents\Office Projects\eu_education_tracker\education_tracker\education_tracker\settings.py changed, reloading.

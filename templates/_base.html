@@ -1,0 +1,62 @@
+<!-- templates/_base.html -->
+
+{% load compress %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EU State of Education - Sierra Leone</title>
+
+    {% compress css %}
+        <link rel="stylesheet" href="{% static 'src/output.css' %}">
+    {% endcompress %}
+
+    <!-- Include DataTables CSS and JS (CDN) -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.6/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.6/datatables.min.js"></script>
+
+    <!-- Include Tailwind CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/chart/Chart.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+
+    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+
+
+
+    {% block head %}
+    
+    {% endblock head %}
+
+</head>
+
+<body class="bg-white-50" hx-ext="ws" ws-connect="/ws/notifications/">
+    {% include 'navbar.html' %}
+    <div class="container mx-auto mt-24">
+        
+
+            {% block content %}
+            {% endblock content %}
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+
+    
+</body>
+
+</html>
