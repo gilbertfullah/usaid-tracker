@@ -7,7 +7,7 @@ urlpatterns=[
     
     path('manage-indicator/<int:indicator_id>/', views.manage_indicator, name='manage_indicator'),
     
-    path('trust-in-local-authorities/', views.trust_in_local_authorities, name='trust_in_local_authorities'),
+    path('trust-in-local-authorities/', views.citizen_priorities_view, name='trust_in_local_authorities'),
     
     path('indicator_list/', views.indicator_list, name='indicator_list'),
     

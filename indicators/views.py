@@ -4,8 +4,8 @@ from .models import Indicator, IndicatorData, TrustInLocalAuthorities
 import os
 from django.conf import settings
 import calendar
-from django.db.models.functions import ExtractMonth, ExtractHour, ExtractDay
-from django.db.models import Count, CharField, Value
+from django.db.models.functions import ExtractMonth, ExtractHour, ExtractDay, ExtractIsoYear, ExtractYear
+from django.db.models import Count, CharField, Value, Avg
 from datetime import timedelta
 from django.utils import timezone
 from django.db.models.functions import TruncDate, Cast
@@ -24,6 +24,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.forms import modelformset_factory
 from django.http import JsonResponse
+from django.db.models import F
+import json
 
 
 
@@ -240,3 +242,184 @@ def indicator_detail(request, indicator_id):
     indicator_data = IndicatorData.objects.filter(indicator=indicator_id)
     
     return render(request, 'indicator_details.html', {'indicator_data': indicator_data})
+
+def trust_in_local_authorities(request):
+    # Get all available districts and service types for filtering
+    #all_districts = District.objects.all()
+    #all_service_types = ServiceType.objects.all()
+    
+    #indicator_name = f"% increase in citizen’s trust in local authorities"
+    
+    #all_districts_avg = IndicatorData.objects.values('district', 'indicator__name').annotate(avg=Avg('indicator_value'))
+    all_service_types_avg = IndicatorData.objects.values('answer_choice_trust').annotate(avg=Avg('indicator_value'))
+    
+    trust = IndicatorData.objects.values('answer_choice_trust', year=ExtractYear('date_submitted')).annotate(avg=Avg('indicator_value')).order_by('year', 'answer_choice_trust')
+    
+    #trust = IndicatorData.objects.annotate(year=ExtractIsoYear('date_submitted')).values('year').annotate(avg=Avg('indicator_value')).values("year", 'avg')
+    
+    # Initialize dictionaries to store the data
+    years = {}
+    trust_values = {}
+
+    # Loop through the queryset results
+    for entry in trust:
+        year = entry['year']
+        trust_choice = entry['answer_choice_trust']
+        avg_value = entry['avg']
+
+        # Add the year to the 'years' dictionary if it's not already there
+        if year not in years:
+            years[year] = []
+
+        # Add the average value for the corresponding 'answer_choice_trust' and year
+        if trust_choice not in trust_values:
+            trust_values[trust_choice] = []
+
+        years[year].append(avg_value)
+        trust_values[trust_choice].append(avg_value)
+        
+    chart_data = {
+        'labels': list(years.keys()),  # Unique years for x-axis labels
+        'datasets': []
+    }
+        
+    for trust_choice, values in trust_values.items():
+        dataset = {
+            'label': trust_choice,
+            'data': values,
+            'borderColor': 'rgba(75, 192, 192, 1)',  # Adjust the color as needed
+            'fill': False
+        }
+        chart_data['datasets'].append(dataset)
+        
+        for dataset in chart_data['datasets']:
+            dataset['data'] = [float(value) for value in dataset['data']]
+            
+    
+    datasets = chart_data['datasets']
+
+    # Iterate through each dataset
+    for dataset in datasets:
+        label = dataset['label']
+        data = [float(value) for value in dataset['data']]
+        dataset['data'] = data
+        borderColor = dataset['borderColor']
+        fill = dataset['fill']
+
+    script_data = {
+    'datasets': datasets
+    }
+    
+    labels = []
+    values = []
+    
+    for data in script_data['datasets']:
+        labels.append(data['label'])
+        values.append(data['data'])
+        
+    data = {
+        'labels': ['2018', '2020', '2022'],
+        'datasets': datasets,
+    }
+    
+    flattened_data = [(label, value) for label, value in zip(labels, values)]
+    
+    print(labels)
+    print(values)
+
+    return render(request, 'trust_in_local_authorities.html', {'chart_data': flattened_data, 'label':label, 'values':values})
+
+
+def trust_in_la(request):
+    # Query the data and calculate average indicator values for each trust choice
+    indicator_values = IndicatorData.objects.values('answer_choice_trust', year=ExtractYear('date_submitted')).annotate(avg=Avg('indicator_value')).order_by('year', 'avg')
+    
+    years = []
+    
+    y = IndicatorData.objects.values(year=ExtractYear('date_submitted')).distinct().order_by('year')
+    for i in y:
+        years.append(i['year'])
+        
+
+    # Initialize dictionaries to store the data
+    data_by_trust_choice = {}
+    
+        
+
+    for values in indicator_values:
+        #years.append(values['year'])
+        trust_choice = values['answer_choice_trust']
+        avg_value = float(values['avg'])  # Extract the numeric value
+
+        # Create or update the dataset for each trust choice
+        if trust_choice not in data_by_trust_choice:
+            data_by_trust_choice[trust_choice] = {
+                'label': trust_choice,
+                'data': [],
+            }
+
+        data_by_trust_choice[trust_choice]['data'].append(avg_value)
+
+    # Prepare the data for the chart
+    labels = list(set(data['label'] for data in data_by_trust_choice.values()))
+    datasets = list(data_by_trust_choice.values())
+    
+    data_values = [entry['data'] for entry in datasets]
+    
+    not_at_all = data_values[0][:3]
+    just_a_little = data_values[1]
+    a_lot = data_values[2]
+    somewhat = data_values[3]
+    
+
+    context = {
+        'not_at_all': json.dumps(not_at_all),
+        'just_a_little': json.dumps(just_a_little),
+        'a_lot': json.dumps(a_lot),
+        'somewhat': json.dumps(somewhat),
+        'years': json.dumps(years),
+    }
+    
+    print(years)
+    
+    
+    
+    return render(request, 'trust_in_local_authorities.html', context)
+
+
+def citizen_priorities_view(request):
+    audit_recommendation_indicator = f"% increase in audit recommendations implemented by the councils"
+    
+    avg_audit_recommendation = Decimal(IndicatorData.objects.filter(status='approved', indicator__name=audit_recommendation_indicator).
+                    aggregate(Avg('indicator_value'))['indicator_value__avg'] or 0)
+    avg_audit_recommendation = round(avg_audit_recommendation, 0)
+    
+    audit_base_query = (IndicatorData.objects.values('district__name').annotate(avg=Avg('indicator_value')).order_by('avg'))
+        
+    data_by_audit_recommendations = {}
+    
+    # Now, base_query contains the average indicator_value for each district based on answer_choice_comm_stability.
+    for result in audit_base_query:
+        district_name = result['district__name']
+        average_value = float(result['avg'])
+
+        # Create or update the dataset for each trust choice
+        if district_name not in data_by_audit_recommendations:
+            data_by_audit_recommendations[district_name] = {
+                'label': district_name,
+                'data': [],
+            }
+
+        data_by_audit_recommendations[district_name]['data'].append(average_value)
+
+    # Prepare the data for the chart
+    audit_labels = list(set(data['label'] for data in data_by_audit_recommendations.values()))
+    audit_datasets = list(data_by_audit_recommendations.values())
+
+    audit_data_values = [entry['data'] for entry in audit_datasets]
+
+    print(audit_labels)
+    print(audit_data_values)
+    
+    return render(request, 'trust_in_local_authorities.html')
+    
